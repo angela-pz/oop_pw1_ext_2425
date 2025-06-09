@@ -1,3 +1,4 @@
+id,arrivalTime,type,additionalData1,additionalData2
 P001,120,Passenger,5,200
 M002,45,,Freight,15000,Containers
 A003,50,Freight,2000,Coal
