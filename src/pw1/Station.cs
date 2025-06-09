@@ -31,6 +31,7 @@ namespace TrainStation
         public bool LoadFromFile(string path)
         {
             string id = "";
+            Train.TrainStatus status = 0;
             int arrivalTime = 0;
             string type = "";
             int numberOfPassengers = 0;
@@ -90,7 +91,7 @@ namespace TrainStation
                                         numberOfPassengers = int.Parse(parts[3]);
                                         capacity = int.Parse(parts[4]);
 
-                                        Trains.Add(new PassengerTrain(id, arrivalTime, type, numberOfPassengers, capacity));
+                                        Trains.Add(new PassengerTrain(id, status, arrivalTime, type, numberOfPassengers, capacity));
                                     }
                                     catch
                                     {
@@ -105,7 +106,7 @@ namespace TrainStation
                                         maxWeight = int.Parse(parts[3]);
                                         freightType = parts[4];
 
-                                        Trains.Add(new FreightTrain(id, arrivalTime, type, maxWeight, freightType));
+                                        Trains.Add(new FreightTrain(id, status, arrivalTime, type, maxWeight, freightType));
                                     }
                                     catch
                                     {
@@ -151,62 +152,10 @@ namespace TrainStation
 
         public void StartSimulation()
         {
-            Console.WriteLine("start simulation");
+            Console.WriteLine("How many platforms are there?: ");
+            
         }
 
     }
 }
 
-
-
-/*
-
-
-
-                    string[] lines = File.ReadAllLines(path);
-
-                foreach (string line in lines)
-                {
-                    //id,arrivalTime,type,additionalData1,additionalData2
-                    string[] parts = line.Split(',');
-                    if (parts.Length < 5)
-                    {
-                        Console.WriteLine("Error");
-                        return false;
-                    }
-                    id = parts[0];
-                    arrivalTime = int.Parse(parts[1]);
-                    type = parts[2];
-
-                    if (type.Equals("Passengers", StringComparison.OrdinalIgnoreCase))
-                    {
-                        numberOfPassengers = int.Parse(parts[3]);
-                        capacity = int.Parse(parts[4]);
-
-                        Trains.Add(new PassengerTrain(id, arrivalTime, type, numberOfPassengers, capacity));
-                    }
-
-                    if (type.Equals("Freight", StringComparison.OrdinalIgnoreCase))
-                    {
-                        maxWeight = int.Parse(parts[3]);
-                        freightType = parts[4];
-
-                        Trains.Add(new FreightTrain(id, arrivalTime, type, maxWeight, freightType));
-                    }
-                    else
-                    {
-                        Console.WriteLine("Unknown aircraft type");
-                        return false;
-                    }
-
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error loading file: " + ex.Message);
-                return false;
-            }
-            return true;
-        }
-        
-*/
