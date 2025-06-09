@@ -9,10 +9,10 @@ namespace TrainStation
         public int arrivalTime { get; set; }
         public string type { get; set; }
 
-        public Train(string Id, int ArrivalTime, string Type)
+        public Train(string id, int arrivalTime, string type)
         {
-            this.id = Id;
-            this.arrivalTime = ArrivalTime;
+            this.id = id;
+            this.arrivalTime = arrivalTime;
             this.type = type;
         }
     }

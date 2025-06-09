@@ -1,0 +1,15 @@
+P001,120,Passenger,5,200
+M002,45,,Freight,15000,Containers
+A003,50,Freight,2000,Coal
+B004,10,Passengers,2,520
+D005,200,Passenger,15,1200
+J006,55,,Freight,1000,Liquid
+W007,160,Freight,22000,Metal
+K008,300,Passengers,12,7000
+H009,160,Freight,8000,Oil
+L010,75,Passenger,8,650
+R011,220,,Freight,10000,Wood
+V012,150,Freight,5000,Cars
+X013,310,Passengers,7,875
+T014,20,,Freight,25000,Minerals
+E015,280,Passenger,21,1350

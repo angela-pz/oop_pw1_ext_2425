@@ -6,6 +6,7 @@ namespace TrainStation
     {
         public static void Main(string[] args)
         {
+            //main menu 
             Console.Clear();
             Console.WriteLine("");
             Console.WriteLine("╔═══════════════════════════════════════╗");
@@ -17,16 +18,24 @@ namespace TrainStation
             Console.WriteLine("╚═══════════════════════════════════════╝");
             Console.Write("Select an option: ");
 
-            int option = Convert.ToInt32(Console.ReadLine());
+            int option = Convert.ToInt32(Console.ReadLine()); //the user selects an option
 
-            switch (option)
+            Station station = new Station(); // create the object 
+
+            switch (option) //depending on the option selected, it will be directed to the corresponding program
             {
                 case 1:
+                    Console.Write("Enter file path: "); //the user enters the file path
+                    string path = Console.ReadLine();
+
+                    bool result = station.LoadFromFile(path); //call LoadFromFile
+                    if (result) Console.WriteLine("Flights loaded successfully.");
                     break;
                 case 2:
+                    station.StartSimulation(); //cals StartSimulation
                     break;
                 case 3:
-                    break;
+                    break; //exits
                 default:
                     Console.WriteLine("invalid option");
                     break;
