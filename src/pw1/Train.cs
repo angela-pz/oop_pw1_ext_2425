@@ -1,14 +1,15 @@
 using System;
+using System.Runtime.InteropServices;
 
 
 namespace TrainStation
 {
     public abstract class Train
     {
-        protected string ID { get; set; }
-        protected TrainStatus Status { get; set; }
-        protected int ArrivalTime { get; set; }
-        protected string Type { get; set; }
+        protected string ID;
+        protected TrainStatus Status;
+        protected int ArrivalTime;
+        protected string Type;
 
         public enum TrainStatus : int
         {
@@ -18,10 +19,10 @@ namespace TrainStation
             Docked = 4
         }
 
-        public Train(string ID, TrainStatus Status, int ArrivalTime, string Type)
+        public Train(string ID, int ArrivalTime, string Type)
         {
             this.ID = ID;
-            this.Status = Status;
+            this.Status = TrainStatus.EnRoute;
             this.ArrivalTime = ArrivalTime;
             this.Type = Type;
         }
@@ -38,6 +39,14 @@ namespace TrainStation
         public void SetStatus(TrainStatus status)
         {
             this.Status = status;
+        }
+        public int GetArrivalTime()
+        {
+            return this.ArrivalTime;
+        }
+        public void SetArrivalTime(int ArrivalTime)
+        {
+            this.ArrivalTime = ArrivalTime;
         }
         
         public virtual void DisplayStatus()

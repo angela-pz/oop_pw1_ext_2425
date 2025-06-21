@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using Microsoft.Win32.SafeHandles;
 
 
 namespace TrainStation
@@ -7,53 +8,59 @@ namespace TrainStation
     public class Station
     {
         //common for all trains
-        public string id = "";
-        public Train.TrainStatus status = 0;
-        public int arrivalTime = 0;
-        public string type = "";
+        private string id = "";
+        private Train.TrainStatus status = 0;
+        private int arrivalTime = 0;
+        private string type = "";
 
         //sepecific for passenger trains
-        public int numberOfPassengers = 0;
-        public int capacity = 0;
+        private int numberOfPassengers = 0;
+        private int capacity = 0;
 
         //specific for freight trains 
-        public int maxWeight = 0;
-        public string freightType = "";
-        public List<Platform> Platforms { get; set; }
-        public List<Train> Trains { get; set; }
-        public Station()
+        private int maxWeight = 0;
+        private string freightType = "";
+
+        private List<Platform> Platforms { get; set; }
+        private List<Train> Trains { get; set; }
+
+        public Station(int numPlatforms)
         {
-            Platforms = new List<Platform>();
-            Trains = new List<Train>();
+            this.Platforms = new List<Platform>();
+            this.Trains = new List<Train>();
+
+            for (int i = 0; i < numPlatforms; i++)
+            {
+                Platforms.Add(new Platform($"P{i + 1}", Platform.PlatformStatus.Free, null, 2));
+            }
         }
 
         public void DisplayStatus()
         {
             Console.WriteLine("Plarform Status:");
-            foreach (var platform in Platforms)
+            foreach (Platform platform in Platforms)
             {
                 Console.WriteLine(platform.ToString());
             }
 
             Console.WriteLine("\nTrain Status:");
-            foreach (var train in Trains)
+            foreach (Train train in Trains)
             {
                 Console.WriteLine(train.ToString());
             }
         }
 
-        public bool LoadFromFile(string path)
+        public void LoadFromFile(string path)
         {
             bool validAccess = true;
+
+            StreamReader sr = File.OpenText(path);
+            string? line = sr.ReadLine();
 
             try
             {
                 if (File.Exists(path))
                 {
-                    StreamReader sr = File.OpenText(path);
-                    string? line = sr.ReadLine();
-                    line = sr.ReadLine();
-
                     while (line != null)
                     {
                         try
@@ -72,7 +79,7 @@ namespace TrainStation
                                 {
                                     id = parts[0];
                                 }
-                                catch
+                                catch (Exception ex)
                                 {
                                     Console.WriteLine("Invalid ID format.");
                                 }
@@ -82,9 +89,9 @@ namespace TrainStation
                                 {
                                     arrivalTime = Convert.ToInt32(parts[1]);
                                 }
-                                catch
+                                catch (Exception ex)
                                 {
-                                    Console.WriteLine("Invalid distance format.");
+                                    Console.WriteLine("Invalid time format.");
                                     Console.ReadLine();
                                 }
 
@@ -98,7 +105,7 @@ namespace TrainStation
 
                                         Trains.Add(new PassengerTrain(id, status, arrivalTime, type, numberOfPassengers, capacity));
                                     }
-                                    catch
+                                    catch (Exception)
                                     {
                                         Console.WriteLine("Invalid Additional Data format.");
                                         Console.ReadLine();
@@ -113,7 +120,7 @@ namespace TrainStation
 
                                         Trains.Add(new FreightTrain(id, status, arrivalTime, type, maxWeight, freightType));
                                     }
-                                    catch
+                                    catch (Exception)
                                     {
                                         Console.WriteLine("Invalid Additional Data format.");
                                         Console.ReadLine();
@@ -135,22 +142,23 @@ namespace TrainStation
                         line = sr.ReadLine(); //read the next line of the file 
                     }
 
-                    sr.Close(); //close the file after reading it
+                    Console.WriteLine("Trains loaded successfully.");
                 }
                 else
                 {
                     Console.WriteLine("File not found.");
                     Console.ReadLine();
-                    validAccess = false;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error loading file: " + ex.Message);
+                Console.WriteLine("Error regarding to the file. Error: " + ex.Message);
                 Console.ReadLine();
-                validAccess = false;
             }
-            return validAccess;
+            finally
+            {
+                sr.Close();
+            }
         }
 
 
@@ -159,38 +167,63 @@ namespace TrainStation
             bool simulation = true;
             while (simulation)
             {
-                Console.WriteLine("Click any key to advance a tick or Press 'e' to exit and terminate the simulation.\n");
-                string UserInput = Console.ReadLine();
-
-                if (UserInput == "e")
-                {
-                    simulation = false;
-                }
+                Console.WriteLine("Click any key to advance a tick");
 
                 AdvanceTick();
             }
-            
         }
 
-        public void AdvanceTick()
+        public void AdvanceTick() //advance one tick
         {
-            /*
-            foreach (Platform platform in Platforms)
+            foreach (Train train in Trains)
             {
-
+                arrivalTime = arrivalTime - 15;
+                if (arrivalTime <= 0)
+                {
+                    train.SetArrivalTime(0);
+                }
+                else
+                {
+                    train.SetArrivalTime(arrivalTime);
+                }
             }
-            */
 
-            arrivalTime = arrivalTime - 15;
             if (arrivalTime <= 0)
             {
-                //encontrar free platform 
+                //find free platform 
+                foreach (Platform platform in Platforms)
+                {
+                    if (platform.GetPlatformStatus() == Platform.PlatformStatus.Free)
+                    {
+                        //there is free --> docking 
+                        foreach (Train train in Trains)
+                        {
+                            platform.SetCurrentTrain(train);
+                            train.SetStatus(Train.TrainStatus.Docking);
+                        }
+                    }
 
-                //si hay free --> docking 
-                status = Train.TrainStatus.Docking;
+                    if (platform.GetPlatformStatus() == Platform.PlatformStatus.Ocupied)
+                    {
+                        //there is no free (occupied) --> waiting
+                        status = Train.TrainStatus.Waiting;
 
-                //si no hay free --> waiting 
-                status = Train.TrainStatus.Waiting;
+                        platform.dockingTime--; //decrease docking time
+
+                        if (platform.dockingTime <= 0) //once docking time is 0 the platform gets free and the train docked
+                        {
+                            foreach (Train train in Trains)
+                            {
+                                platform.SetCurrentTrain(train);
+                                train.SetStatus(Train.TrainStatus.Docking);
+
+                                //status = Train.TrainStatus.Docked;
+                            }
+
+                            platform.SetPlatformStatus(Platform.PlatformStatus.Free); 
+                        }
+                    }
+                }
             }
         }
     }

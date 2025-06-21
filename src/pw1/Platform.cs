@@ -1,14 +1,15 @@
 using System;
+using System.Runtime.InteropServices;
 
 
 namespace TrainStation
 {
     public class Platform
     {
-        public string id { get; set; }
-        public PlatformStatus status { get; set; }
-        public Train currentTrain { get; set; }
-        public const int dockingTime = 2;
+        public string id; 
+        public PlatformStatus status; 
+        public Train currentTrain; 
+        public int dockingTime = 2;
 
         public enum PlatformStatus
         {
@@ -24,6 +25,31 @@ namespace TrainStation
         }
 
         //getter for status 
+        public PlatformStatus GetPlatformStatus()
+        {
+            return this.status;
+        }
+        public void SetPlatformStatus(PlatformStatus status)
+        {
+            this.status = status; 
+        }
+        public Train GetCurrentTrain()
+        {
+            return this.currentTrain;
+        }
+        public void SetCurrentTrain(Train currentTrain)
+        {
+            this.currentTrain = currentTrain;
+        }
+        public int GetDockingTime()
+        {
+            return this.dockingTime;
+        }
+        public void SetDockingTime(int dockingTime)
+        {
+            this.dockingTime = dockingTime;
+        }
+
 
         public void DisplayStatus()
         {

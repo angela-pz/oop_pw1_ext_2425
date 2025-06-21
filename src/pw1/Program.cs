@@ -9,15 +9,10 @@ namespace TrainStation
         public static void Main(string[] args)
         {
             //initial platform question
-
             Console.WriteLine("How many platforms are there?: ");
             int numPlatforms = Int32.Parse(Console.ReadLine());
 
-            for (int i = 0; i < numPlatforms; i++)
-            {
-                string id = ($"P{i + 1}");
-                Platforms.Add(new Platform(id, Platform.PlatformStatus.Free, null, 2));
-            }
+            Station station = new Station(numPlatforms); // create the object 
 
             Console.WriteLine($"{numPlatforms} platforms added.");
             //main menu 
@@ -34,16 +29,12 @@ namespace TrainStation
 
             int option = Convert.ToInt32(Console.ReadLine()); //the user selects an option
 
-            Station station = new Station(); // create the object 
-
             switch (option) //depending on the option selected, it will be directed to the corresponding program
             {
                 case 1:
                     Console.Write("Enter file path: "); //the user enters the file path
                     string path = Console.ReadLine();
-
-                    bool result = station.LoadFromFile(path); //call LoadFromFile
-                    if (result) Console.WriteLine("Flights loaded successfully.");
+                    station.LoadFromFile(path); //call LoadFromFile
                     break;
                 case 2:
                     station.StartSimulation(); //cals StartSimulation
