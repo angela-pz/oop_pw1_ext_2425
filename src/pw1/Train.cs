@@ -1,15 +1,14 @@
 using System;
-using System.Collections.Specialized;
-using System.Runtime.InteropServices;
+
 
 namespace TrainStation
 {
-    public class Train
+    public abstract class Train
     {
-        protected string id { get; set; }
-        protected TrainStatus status { get; set; }
-        protected int arrivalTime { get; set; }
-        protected string type { get; set; }
+        protected string ID { get; set; }
+        protected TrainStatus Status { get; set; }
+        protected int ArrivalTime { get; set; }
+        protected string Type { get; set; }
 
         public enum TrainStatus : int
         {
@@ -19,46 +18,31 @@ namespace TrainStation
             Docked = 4
         }
 
-        public Train(string id, TrainStatus status, int arrivalTime, string type)
+        public Train(string ID, TrainStatus Status, int ArrivalTime, string Type)
         {
-            this.id = id;
-            this.status = status;
-            this.arrivalTime = arrivalTime;
-            this.type = type;
+            this.ID = ID;
+            this.Status = Status;
+            this.ArrivalTime = ArrivalTime;
+            this.Type = Type;
         }
 
         public string GetId()
         {
-            return this.id;
+            return this.ID;
         }
 
         public TrainStatus GetStatus()
         {
-            return this.status;
+            return this.Status;
         }
         public void SetStatus(TrainStatus status)
         {
-            this.status = status;
-        }
-
-        public void AvanceTick() //virtual?
-        {
-            if (status == Train.TrainStatus.EnRoute)
-            {
-                // Calculate time in 15 minutes (time / 4)
-                arrivalTime = arrivalTime / 4;
-
-                // When the time gets to 0, the trains goes to waiting 
-                if (arrivalTime == 0)
-                {
-                    status = Train.TrainStatus.Waiting;
-                }
-            }
+            this.Status = status;
         }
         
-        public virtual void ShowStatus()
+        public virtual void DisplayStatus()
         {
-            Console.Write($" ID: {id}, Status: {status}, Time for arrival: {arrivalTime}");
+            Console.Write($" ID: {ID}, Status: {Status}, Time for arrival: {ArrivalTime}");
         }
     }
 }

@@ -1,12 +1,25 @@
 ﻿using System;
-using System.Runtime.InteropServices;
+
 
 namespace TrainStation
 {
     public class Program
     {
+        public static List<Platform> Platforms { get; set; } = new List<Platform>();
         public static void Main(string[] args)
         {
+            //initial platform question
+
+            Console.WriteLine("How many platforms are there?: ");
+            int numPlatforms = Int32.Parse(Console.ReadLine());
+
+            for (int i = 0; i < numPlatforms; i++)
+            {
+                string id = ($"P{i + 1}");
+                Platforms.Add(new Platform(id, Platform.PlatformStatus.Free, null, 2));
+            }
+
+            Console.WriteLine($"{numPlatforms} platforms added.");
             //main menu 
             Console.Clear();
             Console.WriteLine("");

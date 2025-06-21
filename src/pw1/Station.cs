@@ -1,10 +1,24 @@
 using System;
-using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
+
 
 namespace TrainStation
 {
     public class Station
     {
+        //common for all trains
+        public string id = "";
+        public Train.TrainStatus status = 0;
+        public int arrivalTime = 0;
+        public string type = "";
+
+        //sepecific for passenger trains
+        public int numberOfPassengers = 0;
+        public int capacity = 0;
+
+        //specific for freight trains 
+        public int maxWeight = 0;
+        public string freightType = "";
         public List<Platform> Platforms { get; set; }
         public List<Train> Trains { get; set; }
         public Station()
@@ -13,7 +27,7 @@ namespace TrainStation
             Trains = new List<Train>();
         }
 
-        public void ShowStatus()
+        public void DisplayStatus()
         {
             Console.WriteLine("Plarform Status:");
             foreach (var platform in Platforms)
@@ -30,15 +44,6 @@ namespace TrainStation
 
         public bool LoadFromFile(string path)
         {
-            string id = "";
-            Train.TrainStatus status = 0;
-            int arrivalTime = 0;
-            string type = "";
-            int numberOfPassengers = 0;
-            int capacity = 0;
-            int maxWeight = 0;
-            string freightType = "";
-
             bool validAccess = true;
 
             try
@@ -114,7 +119,6 @@ namespace TrainStation
                                         Console.ReadLine();
                                     }
                                 }
-
                             }
                         }
                         catch (ArgumentNullException)
@@ -140,7 +144,7 @@ namespace TrainStation
                     validAccess = false;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine("Error loading file: " + ex.Message);
                 Console.ReadLine();
@@ -152,10 +156,43 @@ namespace TrainStation
 
         public void StartSimulation()
         {
-            Console.WriteLine("How many platforms are there?: ");
+            bool simulation = true;
+            while (simulation)
+            {
+                Console.WriteLine("Click any key to advance a tick or Press 'e' to exit and terminate the simulation.\n");
+                string UserInput = Console.ReadLine();
+
+                if (UserInput == "e")
+                {
+                    simulation = false;
+                }
+
+                AdvanceTick();
+            }
             
         }
 
+        public void AdvanceTick()
+        {
+            /*
+            foreach (Platform platform in Platforms)
+            {
+
+            }
+            */
+
+            arrivalTime = arrivalTime - 15;
+            if (arrivalTime <= 0)
+            {
+                //encontrar free platform 
+
+                //si hay free --> docking 
+                status = Train.TrainStatus.Docking;
+
+                //si no hay free --> waiting 
+                status = Train.TrainStatus.Waiting;
+            }
+        }
     }
 }
 
