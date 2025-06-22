@@ -17,8 +17,11 @@ style="width:4.30208in;height:1.07292in" />
 
 INDEX
 
-I - INTRODUCTION 3 II - DESCRIPTION 3 III - UML DIAGRAM 5 IV - PROBLEMS
-5 V - CONCLUSION 5
+I - INTRODUCTION 3 
+II - DESCRIPTION 3 
+III - UML DIAGRAM 5 
+IV - PROBLEMS 5
+V - CONCLUSION 5
 
 **I** **-** **INTRODUCTION**
 
@@ -91,7 +94,8 @@ Contains the enums for the platform status to indicate if it's free or
 occupied. Also has the setters and the getters of status, current train
 and docking time.
 
-*Enum* *PlatFormStatus* *:* *int* - Free
+*Enum* *PlatFormStatus* *:* *int* 
+- Free
 
 > \- Occupied
 
@@ -106,9 +110,12 @@ This is an abstract class that contains the declaration, setter and
 getters of all the train attributes and that all the train types
 (passenger and freight) have in common.
 
-*Enum* *TrainStatus:* *int* - EnRoute
+*Enum* *TrainStatus:* *int* 
+- EnRoute
 
-> \- Waiting - Docking - Docked
+> \- Waiting
+> - Docking
+> - - Docked
 
 *DisplayStatus():*
 
