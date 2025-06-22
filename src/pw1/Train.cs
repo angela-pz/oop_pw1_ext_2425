@@ -49,9 +49,9 @@ namespace TrainStation
             this.arrivalTime = ArrivalTime;
         }
         
-        public virtual void DisplayStatus()
+        public void DisplayStatus()
         {
-            Console.Write($" ID: {id}, Status: {status}, Time for arrival: {arrivalTime}");
+            Console.Write($"ID: {id}, Status: {status}, Time for arrival: {arrivalTime}\n");
         }
     }
 }

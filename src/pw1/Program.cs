@@ -17,23 +17,29 @@ namespace TrainStation
 
             Console.WriteLine($"{numPlatforms} platforms added.");
 
-            int option = Menu(); 
+            int option = 0;
 
-            switch (option) //depending on the option selected, it will be directed to the corresponding program
+            while (option != 3)
             {
-                case 1:
-                    Console.Write("Enter file path: "); //the user enters the file path
-                    string path = Console.ReadLine();
-                    station.LoadFromFile(path); //call LoadFromFile
-                    break;
-                case 2:
-                    station.StartSimulation(); //cals StartSimulation
-                    break;
-                case 3:
-                    break; //exits
-                default:
-                    Console.WriteLine("invalid option");
-                    break;
+                option = Menu();
+
+                switch (option) //depending on the option selected, it will be directed to the corresponding program
+                {
+                    case 1:
+                        Console.Write("Enter file path: "); //the user enters the file path
+                        string path = Console.ReadLine();
+                        station.LoadFromFile(path); //call LoadFromFile
+                        break;
+                    case 2:
+                        station.StartSimulation(); //calls StartSimulation
+                        break;
+                    case 3:
+                        break; //exits
+                    default:
+                        Console.WriteLine("invalid option");
+                        break;
+                }
+            
             }
         }
 

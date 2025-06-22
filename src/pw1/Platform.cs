@@ -11,10 +11,10 @@ namespace TrainStation
         public Train currentTrain; 
         public int dockingTime = 2;
 
-        public enum PlatformStatus
+        public enum PlatformStatus : int
         {
-            Free,
-            Ocupied
+            Free = 0,
+            Ocupied = 1
         }
 
         public Platform(string id, PlatformStatus status, Train currentTrain, int dockingTime)
@@ -33,6 +33,8 @@ namespace TrainStation
         {
             this.status = status; 
         }
+
+        //current train 
         public Train GetCurrentTrain()
         {
             return this.currentTrain;
@@ -41,6 +43,8 @@ namespace TrainStation
         {
             this.currentTrain = currentTrain;
         }
+
+        //docking time
         public int GetDockingTime()
         {
             return this.dockingTime;
@@ -59,30 +63,8 @@ namespace TrainStation
             }
             else
             {
-                Console.WriteLine($"{id}: Occupied by {currentTrain.GetId()}");
+                Console.WriteLine($"{id}: Occupied by {currentTrain.GetId()}, Ticks left: {GetDockingTime()}");
             }
         }
     }
 }
-
-/*
-        public bool RequestPlatform(Train train)
-        {
-            //if the platform is free and the train is is waiting, the train goes to occupy the platform and the status 
-            //of the platform status changes to occupied and the train to the next status (docking)
-            if (status == PlatformStatus.Free && train.GetStatus() == Train.TrainStatus.Waiting)
-            {
-                currentTrain = train;
-                status = PlatformStatus.Ocupied;
-                train.SetStatus(Train.TrainStatus.Docking);
-                return true;
-            }
-            return false;
-        }
-
-        public void FreeRunway()
-        {
-            currentTrain = null;
-            status = PlatformStatus.Free;
-        }
-*/
