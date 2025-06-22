@@ -111,11 +111,10 @@ getters of all the train attributes and that all the train types
 (passenger and freight) have in common.
 
 *Enum* *TrainStatus:* *int* 
-- EnRoute
-
+> \- EnRoute
 > \- Waiting
-> - Docking
-> - - Docked
+> \- Docking
+> \- Docked
 
 *DisplayStatus():*
 
@@ -137,13 +136,14 @@ attributes from this type of train, maximum weight and freight type.
 This is the file that contains the trains data in the following order:
 *ID,* *ArrivalTime,* *Type,* *AdditionalData1,* *AdditionalData2*
 
-<img src="./mjibkobh.png"
-style="width:6.27083in;height:4.125in" />
 
 **III** **-** **UML** **DIAGRAM**
 
 This following diagram is the UML (unified modelling language) diagram
 of the program:
+<img src="./mjibkobh.png"
+style="width:6.27083in;height:4.125in" />
+
 
 **IV** **-** **PROBLEMS**
 
