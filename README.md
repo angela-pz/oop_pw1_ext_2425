@@ -95,8 +95,7 @@ occupied. Also has the setters and the getters of status, current train
 and docking time.
 
 *Enum* *PlatFormStatus* *:* *int* 
-- Free
-
+> \- Free
 > \- Occupied
 
 *DiplayStatus():*
