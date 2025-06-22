@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using Microsoft.Win32.SafeHandles;
 
 
@@ -101,8 +102,9 @@ namespace TrainStation
                 Console.ReadKey();
 
                 DisplayStatus();
-
                 AdvanceTick();
+
+                simulation = false;
 
                 foreach (Train train in Trains)
                 {
@@ -110,17 +112,15 @@ namespace TrainStation
                     {
                         simulation = true;
                     }
-                    else
-                    {
-                        simulation = false;
-                    }
                 }
 
                 if (!simulation)
                 {
-                    Console.WriteLine("All trains are docked. Exiting simulation...");
+                    DisplayStatus();
+                    Console.WriteLine("\n All trains are docked. Exiting simulation...");
                     Console.ReadKey();
                 }
+                
             }
         }
 
@@ -136,38 +136,48 @@ namespace TrainStation
                 }
                 else
                 {
-                    train.SetArrivalTime(train.GetArrivalTime() - 15);
+                    train.SetArrivalTime(time);
                 }
 
-                if (time <= 0)
+                if (time <= 0 && (train.GetStatus() == Train.TrainStatus.EnRoute || train.GetStatus() == Train.TrainStatus.Waiting)) //once arrival time is 0, we start docking
                 {
-                    //find free platform 
+                    //free platform
+                    bool freePlatform = false;
+
                     foreach (Platform platform in Platforms)
                     {
-                        if (platform.GetPlatformStatus() == Platform.PlatformStatus.Free)
+                        if (!freePlatform && platform.GetPlatformStatus() == Platform.PlatformStatus.Free)
                         {
-                            //there is free --> docking 
                             platform.SetCurrentTrain(train);
-                            train.SetStatus(Train.TrainStatus.Docking);
                             platform.SetPlatformStatus(Platform.PlatformStatus.Ocupied);
+                            platform.SetDockingTime(2);
+                            train.SetStatus(Train.TrainStatus.Docking); //docking
+                            freePlatform = true;
                         }
+                    }
 
-                        if (platform.GetPlatformStatus() == Platform.PlatformStatus.Ocupied)
+                    //if its already occuppied we change the status to waiting
+                    if (!freePlatform)
+                    {
+                        train.SetStatus(Train.TrainStatus.Waiting);
+                    }
+                }
+            }
+
+            //if the platform is occupied 
+            foreach (Platform platform in Platforms)
+            {
+                if (platform.GetPlatformStatus() == Platform.PlatformStatus.Ocupied)
+                {
+                    if (platform.GetCurrentTrain() != null && platform.GetCurrentTrain().GetStatus() == Train.TrainStatus.Docking)
+                    {
+                        platform.SetDockingTime(platform.GetDockingTime() - 1); //docking time until the train is docked 
+
+                        if (platform.GetDockingTime() <= 0)
                         {
-                            //there is no free (occupied) --> waiting
-                            train.SetStatus(Train.TrainStatus.Waiting);
-
-                            platform.SetDockingTime(platform.GetDockingTime() - 1); //decrease docking time
-
-                            if (platform.GetDockingTime() <= 0) //once docking time is 0 the platform gets free and the train docked
-                            {
-                                platform.SetCurrentTrain(train);
-                                train.SetStatus(Train.TrainStatus.Docked);
-
-                                platform.SetPlatformStatus(Platform.PlatformStatus.Free);
-
-                                platform.SetCurrentTrain(null);
-                            }
+                            platform.GetCurrentTrain().SetStatus(Train.TrainStatus.Docked); //docking time finishes so we can dock the train
+                            platform.SetPlatformStatus(Platform.PlatformStatus.Free); //free the platform 
+                            platform.SetCurrentTrain(null);
                         }
                     }
                 }
@@ -175,4 +185,6 @@ namespace TrainStation
         }
     }
 }
+
+
 
