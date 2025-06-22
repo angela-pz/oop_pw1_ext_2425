@@ -16,7 +16,7 @@ namespace TrainStation
             this.Platforms = new List<Platform>();
             this.Trains = new List<Train>();
 
-            for (int i = 0; i < numPlatforms; i++)
+            for (int i = 0; i < numPlatforms; i++) //adds the number of platforms that the user entered
             {
                 Platforms.Add(new Platform($"P{i + 1}", Platform.PlatformStatus.Free, null, 2));
             }
@@ -24,13 +24,13 @@ namespace TrainStation
 
         public void DisplayStatus()
         {
-            Console.WriteLine("\nPlatform Status:");
+            Console.WriteLine("\nPlatform Status:"); //display platform status
             foreach (Platform platform in Platforms)
             {
                 platform.DisplayStatus();
             }
 
-            Console.WriteLine("\nTrain Status:");
+            Console.WriteLine("\nTrain Status:"); //displays train status
             foreach (Train train in Trains)
             {
                 train.DisplayStatus();
@@ -59,11 +59,11 @@ namespace TrainStation
                             }
                             else
                             {
-                                if (parts[2] == "Passenger")
+                                if (parts[2] == "Passenger") //adds passenger train
                                 {
                                     Trains.Add(new PassengerTrain(parts[0], Convert.ToInt32(parts[1]), parts[2], Convert.ToInt32(parts[3]), Convert.ToInt32(parts[4])));
                                 }
-                                else if (parts[2] == "Freight")
+                                else if (parts[2] == "Freight") //adds freight train
                                 {
                                     Trains.Add(new FreightTrain(parts[0], Convert.ToInt32(parts[1]), parts[2], Convert.ToInt32(parts[3]), parts[4]));
                                 }
@@ -76,7 +76,7 @@ namespace TrainStation
                         }
                     }
 
-                    Console.WriteLine("Trains loaded successfully.");
+                    Console.WriteLine("Trains loaded successfully."); //loaded all trains 
                     Console.ReadKey();
                 }
 
@@ -101,23 +101,23 @@ namespace TrainStation
                 Console.WriteLine("\n\nClick any key to advance a tick");
                 Console.ReadKey();
 
-                DisplayStatus();
-                AdvanceTick();
+                DisplayStatus(); //display
+                AdvanceTick(); //every tick
 
                 simulation = false;
 
                 foreach (Train train in Trains)
                 {
-                    if (train.GetStatus() != Train.TrainStatus.Docked)
+                    if (train.GetStatus() != Train.TrainStatus.Docked) //not all trains have been docked so we continue the simulation
                     {
                         simulation = true;
                     }
                 }
 
-                if (!simulation)
+                if (!simulation) //all the trains are docked 
                 {
                     DisplayStatus();
-                    Console.WriteLine("\n All trains are docked. Exiting simulation...");
+                    Console.WriteLine("\n All trains are docked. Exiting simulation..."); //finish simulation
                     Console.ReadKey();
                 }
                 
@@ -128,7 +128,7 @@ namespace TrainStation
         {
             foreach (Train train in Trains)
             {
-                int time = train.GetArrivalTime() - 15;
+                int time = train.GetArrivalTime() - 15; //every tick is -15
 
                 if (time <= 0)
                 {
@@ -146,12 +146,14 @@ namespace TrainStation
 
                     foreach (Platform platform in Platforms)
                     {
+                        //there has to be a free platform to be able to dock 
                         if (!freePlatform && platform.GetPlatformStatus() == Platform.PlatformStatus.Free)
                         {
+                            //once its docking we change the status of the platform to occupied 
                             platform.SetCurrentTrain(train);
                             platform.SetPlatformStatus(Platform.PlatformStatus.Ocupied);
                             platform.SetDockingTime(2);
-                            train.SetStatus(Train.TrainStatus.Docking); //docking
+                            train.SetStatus(Train.TrainStatus.Docking); //changed status to docking
                             freePlatform = true;
                         }
                     }
