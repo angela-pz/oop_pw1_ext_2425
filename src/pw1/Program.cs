@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 
 
 namespace TrainStation
@@ -15,19 +16,8 @@ namespace TrainStation
             Station station = new Station(numPlatforms); // create the object 
 
             Console.WriteLine($"{numPlatforms} platforms added.");
-            //main menu 
-            Console.Clear();
-            Console.WriteLine("");
-            Console.WriteLine("╔═══════════════════════════════════════╗");
-            Console.WriteLine("║    Train Station Simulation Menu      ║");
-            Console.WriteLine("║                                       ║");
-            Console.WriteLine("║ 1. Load trains from file              ║");
-            Console.WriteLine("║ 2. Start simulation                   ║");
-            Console.WriteLine("║ 3. Exit                               ║");
-            Console.WriteLine("╚═══════════════════════════════════════╝");
-            Console.Write("Select an option: ");
 
-            int option = Convert.ToInt32(Console.ReadLine()); //the user selects an option
+            int option = Menu(); 
 
             switch (option) //depending on the option selected, it will be directed to the corresponding program
             {
@@ -45,7 +35,25 @@ namespace TrainStation
                     Console.WriteLine("invalid option");
                     break;
             }
+        }
 
+        public static int Menu()
+        {
+            //main menu
+            Console.Clear();
+            Console.WriteLine("");
+            Console.WriteLine("╔═══════════════════════════════════════╗");
+            Console.WriteLine("║    Train Station Simulation Menu      ║");
+            Console.WriteLine("║                                       ║");
+            Console.WriteLine("║ 1. Load trains from file              ║");
+            Console.WriteLine("║ 2. Start simulation                   ║");
+            Console.WriteLine("║ 3. Exit                               ║");
+            Console.WriteLine("╚═══════════════════════════════════════╝");
+            Console.Write("Select an option: ");
+
+            int option = Convert.ToInt32(Console.ReadLine()); //the user selects an option
+
+            return option;
         }
     }
 }

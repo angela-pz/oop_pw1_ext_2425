@@ -61,7 +61,7 @@ namespace TrainStation
             {
                 if (File.Exists(path))
                 {
-                    while (line != null)
+                    while ((line = sr.ReadLine()) != null)
                     {
                         try
                         {
@@ -142,7 +142,9 @@ namespace TrainStation
                         line = sr.ReadLine(); //read the next line of the file 
                     }
 
-                    Console.WriteLine("Trains loaded successfully.");
+                    Console.WriteLine("\nTrains loaded successfully.");
+                    Console.ReadKey();
+                    Program.Menu();
                 }
                 else
                 {
@@ -168,8 +170,20 @@ namespace TrainStation
             while (simulation)
             {
                 Console.WriteLine("Click any key to advance a tick");
-
                 AdvanceTick();
+
+                foreach (Train train in Trains)
+                {
+                    if (train.GetStatus() == Train.TrainStatus.Docked)
+                    {
+                        AdvanceTick();
+                        break;
+                    }
+                    else
+                    {
+                        simulation = false;
+                    }
+                }
             }
         }
 

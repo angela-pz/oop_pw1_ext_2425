@@ -6,10 +6,10 @@ namespace TrainStation
 {
     public abstract class Train
     {
-        protected string ID;
-        protected TrainStatus Status;
-        protected int ArrivalTime;
-        protected string Type;
+        protected string id;
+        protected TrainStatus status;
+        protected int arrivalTime;
+        protected string type;
 
         public enum TrainStatus : int
         {
@@ -19,39 +19,39 @@ namespace TrainStation
             Docked = 4
         }
 
-        public Train(string ID, int ArrivalTime, string Type)
+        public Train(string id, int arrivalTime, string type)
         {
-            this.ID = ID;
-            this.Status = TrainStatus.EnRoute;
-            this.ArrivalTime = ArrivalTime;
-            this.Type = Type;
+            this.id = id;
+            this.status = TrainStatus.EnRoute;
+            this.arrivalTime = arrivalTime;
+            this.type = type;
         }
 
         public string GetId()
         {
-            return this.ID;
+            return this.id;
         }
 
         public TrainStatus GetStatus()
         {
-            return this.Status;
+            return this.status;
         }
         public void SetStatus(TrainStatus status)
         {
-            this.Status = status;
+            this.status = status;
         }
         public int GetArrivalTime()
         {
-            return this.ArrivalTime;
+            return this.arrivalTime;
         }
         public void SetArrivalTime(int ArrivalTime)
         {
-            this.ArrivalTime = ArrivalTime;
+            this.arrivalTime = ArrivalTime;
         }
         
         public virtual void DisplayStatus()
         {
-            Console.Write($" ID: {ID}, Status: {Status}, Time for arrival: {ArrivalTime}");
+            Console.Write($" ID: {id}, Status: {status}, Time for arrival: {arrivalTime}");
         }
     }
 }
